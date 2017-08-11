@@ -13,13 +13,21 @@ import FBSDK, {LoginManager, AccessToken} from "react-native-fbsdk"
 import {StackNavigator} from 'react-navigation'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBx8XDUT4ZnTKBnNHLugSO_VLQwR8t7qcY",
-    authDomain: "smart-farm-f1edb.firebaseapp.com/",
-    databaseURL: "https://smart-farm-f1edb.firebaseio.com/",
-    storageBucket: "",
+    apiKey: "AIzaSyBmFmhmiNqwPcz_dQ182Tkpcw-xPGb67-4",
+    authDomain: "smart-home-d9a27.firebaseapp.com",
+    databaseURL: "https://smart-home-d9a27.firebaseio.com",
+    projectId: "smart-home-d9a27",
+    storageBucket: "smart-home-d9a27.appspot.com",
+    messagingSenderId: "787922450582"
 };
 
 const firebaseRef = firebase.initializeApp(firebaseConfig);
+
+
+// Create a reference with .ref() instead of new Firebase(url)
+const rootRef = firebase.database().ref();
+const itemsRef = rootRef.child('myhome');
+
 
 class App extends Component {
 
@@ -39,6 +47,26 @@ class App extends Component {
         };
     }
 
+    componentDidMount() {
+        this.listenForItems(itemsRef);
+    }
+
+    listenForItems(itemsRef) {
+        itemsRef.on('child_changed', (snapshot) => {
+
+            var key = snapshot.key;
+            var value = snapshot.val();
+            console.log(key, value);
+
+        });
+    }
+
+    updateData(){
+        console.log( firebase.database().ref('myhome').update({
+            Light2 : 10,
+        }))
+    }
+
 
     renderList = (rowData) => {
         return (
@@ -53,8 +81,8 @@ class App extends Component {
             }}>
                 <Text style={{flex:1}}>{rowData} </Text>
                 <Switch
-                    onValueChange={(value) => this.setState({falseSwitchIsOn: value})}
-                    value={this.state.falseSwitchIsOn}/>
+                    onValueChange={() => {this.updateData()}}
+                    value={true}/>
             </View>
         )
     };
