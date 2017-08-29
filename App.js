@@ -1,4 +1,4 @@
-import React , {Component} from 'react';
+import React, {Component} from 'react';
 import {
     ListView,
     StyleSheet,
@@ -6,7 +6,8 @@ import {
     View,
     Button,
     TouchableOpacity,
-    Switch
+    Switch,
+    FlatList
 } from 'react-native';
 import * as firebase from "firebase";
 import FBSDK, {LoginManager, AccessToken} from "react-native-fbsdk"
@@ -23,12 +24,6 @@ const firebaseConfig = {
 
 const firebaseRef = firebase.initializeApp(firebaseConfig);
 
-
-// Create a reference with .ref() instead of new Firebase(url)
-const rootRef = firebase.database().ref();
-const itemsRef = rootRef.child('myhome');
-
-
 class App extends Component {
 
     static navigationOptions = {
@@ -37,52 +32,76 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-
-        const ds = new ListView.DataSource({
-            rowHasChanged: (oldRow, newRol) => oldRow !== newRol
-        });
-
         this.state = {
-            dataSource: ds.cloneWithRows(['Switch 1', 'Switch 2', 'Switch 3', 'Switch 4', 'Switch 5', 'Switch 6', 'Switch 7', 'Switch 8']),
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            })
         };
+        this.itemsRef = this.getRef().child('myhome/switch');
+    }
+
+    getRef() {
+        return firebaseRef.database().ref();
     }
 
     componentDidMount() {
-        this.listenForItems(itemsRef);
+        this.listenForItems(this.itemsRef);
     }
 
     listenForItems(itemsRef) {
-        itemsRef.on('child_changed', (snapshot) => {
+        itemsRef.on('value', (snapshot) => {
+            var items = [];
+            snapshot.forEach((child) => {
 
-            var key = snapshot.key;
-            var value = snapshot.val();
-            console.log(key, value);
+                var key = child.key;
+                var value = child.val();
 
+                items.push({
+                    switch: key,
+                    value: value
+                });
+
+            });
+
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(items)
+            });
         });
+
+        /* itemsRef.on('child_changed', (snapshot) => {
+             var key = snapshot.key;
+             var value = snapshot.val();
+             console.log(key, value);
+
+         });*/
     }
 
-    updateData(){
-        console.log( firebase.database().ref('myhome').update({
-            Light2 : 10,
-        }))
+    updateData(data) {
+
+        var switchKey = data.switch;
+        var value = !data.value;
+
+         firebase.database().ref('myhome/switch').update({
+             [switchKey] : value
+          })
     }
 
 
-    renderList = (rowData) => {
+    renderList = (data) => {
         return (
             <View style={{
                 flex: 1,
                 flexDirection: 'row',
-                height: 40,
+                height: 35,
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingLeft: 15
 
             }}>
-                <Text style={{flex:1}}>{rowData} </Text>
+                <Text style={{flex:1}}>{data.switch} </Text>
                 <Switch
-                    onValueChange={() => {this.updateData()}}
-                    value={true}/>
+                    onValueChange={() => {this.updateData(data)}}
+                    value={data.value}/>
             </View>
         )
     };
@@ -90,7 +109,6 @@ class App extends Component {
     render() {
         return (
             <View>
-
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderList}
