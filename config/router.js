@@ -1,13 +1,10 @@
 import React from 'react';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 
-
 // Screen
 import Home from '../screens/Home';
 import Settings from '../screens/Settings';
 import Activity from '../screens/Activity';
-
-
 
 export const Tabs = TabNavigator({
         Feed: {
@@ -15,6 +12,9 @@ export const Tabs = TabNavigator({
             navigationOptions: {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({tintColor}) => <Icon name="list" size={35} color={tintColor}/>,
+                style: {
+                    backgroundColor: '#4CAF50',
+                },
             },
         },
         Activity: {
