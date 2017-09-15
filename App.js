@@ -10,8 +10,13 @@ import {
     FlatList
 } from 'react-native';
 import * as firebase from "firebase";
-import FBSDK, {LoginManager, AccessToken} from "react-native-fbsdk"
+
 import {StackNavigator} from 'react-navigation'
+
+console.ignoredYellowBox = ['Setting a timer'];
+
+
+import Landing from './screens/landing'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmFmhmiNqwPcz_dQ182Tkpcw-xPGb67-4",
@@ -81,9 +86,9 @@ class App extends Component {
         var switchKey = data.switch;
         var value = !data.value;
 
-         firebase.database().ref('myhome/switch').update({
-             [switchKey] : value
-          })
+        firebase.database().ref('myhome/switch').update({
+            [switchKey]: value
+        })
     }
 
 
@@ -98,21 +103,29 @@ class App extends Component {
                 paddingLeft: 15
 
             }}>
-                <Text style={{flex:1}}>{data.switch} </Text>
+                <Text style={{flex: 1}}>{data.switch} </Text>
                 <Switch
-                    onValueChange={() => {this.updateData(data)}}
+                    onValueChange={() => {
+                        this.updateData(data)
+                    }}
                     value={data.value}/>
             </View>
         )
     };
 
     render() {
+
+        const {navigate} = this.props.navigation;
+
         return (
             <View>
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderList}
                 />
+
+
+                <Button title="Setting" onPress={() => navigate('Setting', {name: 'Jane'})}/>
             </View>
         );
     }
@@ -128,7 +141,6 @@ const styles = StyleSheet.create({
 })
 
 export default StackNavigator({
-    Home: {
-        screen: App
-    }
+    Home: {screen: App},
+    Setting: {screen: Landing},
 });
