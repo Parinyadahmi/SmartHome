@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Platform , StatusBar} from 'react-native';
+import {View, Text, StyleSheet, Platform, StatusBar} from 'react-native';
+import color from '../config/color';
 
-class StatusBarBackground extends Component{
-    render(){
-        return(
+class StatusBarBackground extends Component {
+    render() {
+        return (
             <View style={[styles.statusBarBackground, this.props.style || {}]}>
             </View>
         );
@@ -13,9 +14,9 @@ class StatusBarBackground extends Component{
 const styles = StyleSheet.create({
     statusBarBackground: {
         height: (Platform.OS === 'ios') ? 0 : StatusBar.currentHeight,
-        backgroundColor: "#4CAF50",
+        backgroundColor: color.black,
     }
 
 })
 
-module.exports= StatusBarBackground;
+module.exports = StatusBarBackground;

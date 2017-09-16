@@ -1,6 +1,9 @@
 import React from 'react';
 import {TabNavigator, StackNavigator} from 'react-navigation';
 
+//config
+import color from './color'
+
 // Screen
 import Home from '../screens/Home';
 import Settings from '../screens/Settings';
@@ -12,21 +15,18 @@ export const Tabs = TabNavigator({
             screen: Home,
             navigationOptions: {
                 tabBarLabel: 'Home',
-                tabBarIcon: ({tintColor}) => <Icon name="list" size={35} color={tintColor}/>,
             },
         },
         Activity: {
             screen: Activity,
             navigationOptions: {
                 tabBarLabel: 'Activity',
-                tabBarIcon: ({tintColor}) => <Icon name="account-circle" size={35} color={tintColor}/>
             },
         },
         Setting: {
             screen: Settings,
             navigationOptions: {
                 tabBarLabel: 'Setting',
-                tabBarIcon: ({tintColor}) => <Icon name="account-circle" size={35} color={tintColor}/>
             },
         },
 
@@ -40,7 +40,7 @@ export const Tabs = TabNavigator({
                 backgroundColor: 'rgba(255,255,255,0.7)',
             },
             style: {
-                backgroundColor: '#4CAF50',
+                backgroundColor: color.primary,
             },
         },
 
@@ -50,11 +50,20 @@ export const Tabs = TabNavigator({
 export const Root = StackNavigator({
     Tabs: {
         screen: Tabs,
+        navigationOptions: {
+            title: 'Eco House',
+            headerTitleStyle: {
+                color: 'white',
+            },
+            headerStyle: {
+                backgroundColor: color.primary,
+                elevation: null
+            },
+        },
     },
     Settings: {
         screen: Settings,
     },
 }, {
     mode: 'modal',
-    headerMode: 'none',
 });
