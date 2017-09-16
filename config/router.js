@@ -6,15 +6,13 @@ import Home from '../screens/Home';
 import Settings from '../screens/Settings';
 import Activity from '../screens/Activity';
 
+
 export const Tabs = TabNavigator({
-        Feed: {
+        Home: {
             screen: Home,
             navigationOptions: {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({tintColor}) => <Icon name="list" size={35} color={tintColor}/>,
-                style: {
-                    backgroundColor: '#4CAF50',
-                },
             },
         },
         Activity: {
@@ -46,7 +44,17 @@ export const Tabs = TabNavigator({
             },
         },
 
-    }
+    },
 );
 
-export const Root = Tabs;
+export const Root = StackNavigator({
+    Tabs: {
+        screen: Tabs,
+    },
+    Settings: {
+        screen: Settings,
+    },
+}, {
+    mode: 'modal',
+    headerMode: 'none',
+});

@@ -7,7 +7,8 @@ import {
     Button,
     TouchableOpacity,
     Switch,
-    FlatList
+    FlatList,
+    StatusBar
 } from 'react-native';
 
 import firebaseService from '../config/firebase'
@@ -66,6 +67,7 @@ class App extends Component {
 
     renderList = (data) => {
         return (
+
             <View style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -82,6 +84,8 @@ class App extends Component {
                     }}
                     value={data.value}/>
             </View>
+
+
         )
     };
 
