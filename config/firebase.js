@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import Moment from 'moment';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBmFmhmiNqwPcz_dQ182Tkpcw-xPGb67-4",
@@ -12,7 +13,6 @@ const firebaseConfig = {
 const firebaseRef = firebase.initializeApp(firebaseConfig);
 
 const firebaseService = {
-
     getRef() {
         return firebaseRef.database().ref();
     },
@@ -23,9 +23,23 @@ const firebaseService = {
 
         firebase.database().ref('myhome/switch').update({
             [switchKey]: value
-        })
-    }
+        });
 
+        this.addLogs(data);
+    },
+
+    addLogs(data) {
+        let rootRef = firebase.database().ref().child("Logs");
+        let newKey = rootRef.push().key;
+        let dt = new Date();
+        let date = Moment(dt).format('YYYY/MM/DDTHH:mm');
+        let logs = {
+            "switch_id": parseFloat(data.switch),
+            "value": !data.value,
+            "data_date": date
+        };
+        rootRef.child(newKey).set(logs);
+    }
 }
 
 export default firebaseService;
