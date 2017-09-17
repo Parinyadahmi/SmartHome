@@ -26,12 +26,12 @@ export default class Example extends Component {
     }
 
     componentDidMount() {
-        this.itemsRef.once('value', (snapshot) => {
+        this.itemsRef.on('value', (snapshot) => {
             var items = [];
             snapshot.forEach((child) => {
                 var value = child.val();
 
-                items.push({
+                items.unshift({
                     switch_id: value.switch_id,
                     time: value.data_date,
                     title: value.value ? 'Turn on ' + value.switch_id : 'Turn off ' + value.switch_id,
@@ -47,12 +47,17 @@ export default class Example extends Component {
         });
     }
 
-
     render() {
         var {waiting, data} = this.state;
         if (waiting) {
             return (
                 <ActivityIndicator/>
+            );
+        } else if (data.length === 0) {
+            return (
+                <View style={styles.container}>
+                    <Text>No Activity</Text>
+                </View>
             );
         } else {
             return (
