@@ -1,20 +1,13 @@
 import React, {Component} from 'react';
 import {
     ListView,
-    StyleSheet,
     Text,
     View,
-    Button,
-    TouchableOpacity,
     Switch,
-    FlatList,
-    StatusBar
 } from 'react-native';
 
 import firebaseService from '../config/firebase'
-
 console.ignoredYellowBox = ['Setting a timer'];
-
 
 class App extends Component {
     constructor(props) {
@@ -24,11 +17,11 @@ class App extends Component {
                 rowHasChanged: (row1, row2) => row1 !== row2,
             })
         };
-        this.itemsRef = this.getRef().child('myhome/switch');
+        this.itemsRef = this.getRef();
     }
 
     getRef() {
-        return firebaseService.getRef();
+        return firebaseService.getRef().child('myhome/switch');
     }
 
     componentDidMount() {

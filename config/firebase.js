@@ -29,11 +29,12 @@ const firebaseService = {
     },
 
     addLogs(data) {
-        let rootRef = firebase.database().ref().child("Logs");
+        let rootRef = firebase.database().ref().child("logs");
         let newKey = rootRef.push().key;
         let dt = new Date();
-        let date = Moment(dt).format('YYYY/MM/DDTHH:mm');
+        let date = Moment(dt).format('YYYY/MM/DD HH:mm:ss');
         let logs = {
+            "log_id": newKey,
             "switch_id": parseFloat(data.switch),
             "value": !data.value,
             "data_date": date
