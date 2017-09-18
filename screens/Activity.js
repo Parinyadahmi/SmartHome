@@ -6,7 +6,6 @@ import {
     RefreshControl,
     ActivityIndicator
 } from 'react-native';
-import Moment from 'moment';
 
 import Timeline from 'react-native-timeline-listview';
 import firebaseService from '../config/firebase'
@@ -28,7 +27,7 @@ export default class Example extends Component {
     }
 
     componentDidMount() {
-        this.itemsRef.on('value', (snapshot) => {
+        this.itemsRef.limitToLast(50).on('value', (snapshot) => {
             var items = [];
             snapshot.forEach((child) => {
                 var value = child.val();
