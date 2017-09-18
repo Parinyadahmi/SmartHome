@@ -13,7 +13,7 @@ class StatusBarBackground extends Component {
 
 const styles = StyleSheet.create({
     statusBarBackground: {
-        height: (Platform.OS === 'ios') ? 0 : StatusBar.currentHeight,
+        height: (Platform.OS === 'ios') ? StatusBar.currentHeight : 0,
         backgroundColor: color.black,
     }
 

@@ -6,6 +6,8 @@ import {
     RefreshControl,
     ActivityIndicator
 } from 'react-native';
+import Moment from 'moment';
+
 import Timeline from 'react-native-timeline-listview';
 import firebaseService from '../config/firebase'
 

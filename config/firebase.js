@@ -33,6 +33,7 @@ const firebaseService = {
         let newKey = rootRef.push().key;
         let dt = new Date();
         let date = Moment(dt).format('YYYY/MM/DD HH:mm:ss');
+
         let logs = {
             "log_id": newKey,
             "switch_id": parseFloat(data.switch),
